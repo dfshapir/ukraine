@@ -46,7 +46,7 @@ City <- read_xlsx("City Data.xlsx")
 ```
 
 ```{r hdireal}
-City <- City %>%
+City2 <- City %>%
 
 # Filter to get only full mask
   
@@ -58,14 +58,40 @@ City <- City %>%
 ```
 
 ```{r regression, results = 'asis'}
-hdireg <- lm(Percentage ~ `2019 Oblast HDI` + `Total Ukr Cases` + `Not Oblast Center` + `2001 Pct Russian`, data = City)
+hdireg <- lm(Percentage ~ `2019 Oblast HDI` + `Total Ukr Cases` + `Not Oblast Center` + `2001 Pct Russian`, data = City2)
 
 summary(hdireg)
 
 stargazer(hdireg, title = "Impact of City-Specific Factors on Percent Full Mask Wearing", type = "html")
 ```
 
-```{r graphs}
+```{r graphs, warning = FALSE}
+City3 <- City %>%
+  filter(Category == "Full Mask")
 
+ggplot(City3, aes(x = `2019 Oblast HDI`, y = Percentage)) +
+  geom_point(aes(size = `2020 City Population`)) +
+  geom_smooth(method = "lm", se = FALSE) +
+  geom_text(aes(label = City, hjust = .4, vjust = -1.1), size = 3) +
+  labs(title = "Relationship Between Oblast HDI and Percent Full Masking",
+       subtitle = "Point Size is Relative to City Size") +
+  theme(legend.position = "none")
+
+ggplot(City3, aes(x = `Total Ukr Cases`, y = Percentage)) +
+  geom_point(aes(size = `2020 City Population`)) +
+  geom_smooth(method = "lm", se = FALSE) +
+  geom_text(aes(label = City, hjust = .4, vjust = -1.1), size = 3) +
+  labs(title = "Relationship Between Total Ukrainian Cases and Percent Full Masking",
+       subtitle = "Point Size is Relative to City Size") +
+  theme(legend.position = "none") +
+  coord_cartesian(xlim = c(200000, 450000), ylim = c(30, 100))
+
+ggplot(City3, aes(x = `2001 Pct Russian`, y = Percentage)) +
+  geom_point(aes(size = `2020 City Population`)) +
+  geom_smooth(method = "lm", se = FALSE) +
+  geom_text(aes(label = City, hjust = .45, vjust = -1.1), size = 3) +
+  labs(title = "Relationship Between Pct. of Native Russian Speakers and Pct. Full Masking",
+       subtitle = "Point Size is Relative to City Size, Data is From 2001") +
+  theme(legend.position = "none")
 ```
 
