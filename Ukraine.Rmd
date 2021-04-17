@@ -7,6 +7,7 @@ output: html_document
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE)
+options(scipen=999)
 library(tidyverse)
 library(readr)
 library(readxl)
@@ -32,11 +33,37 @@ region <- ggplot(pct, aes(x = Region, y = Percentage, fill = `Level of Adherence
   geom_col() +
   coord_flip() +
   scale_fill_manual(values = c("light green", "yellow", "orange", "red")) +
-  labs(title = "Mask Wearing By Region",
-       subtitle = "Data Collected over 1 Month Period")
+  labs(title = "Mask Wearing By Region")
 
 region
 
 ggsave("region.png")
+```
+
+```{r hdi}
+City <- read_xlsx("City Data.xlsx")
+```
+
+```{r hdireal}
+City <- City %>%
+  filter(`Oblast Center` == 1) %>%
+
+# Drop Kramatorsk due to missing data
+  
+  filter(City != "Kramatorsk") %>%
+
+# Filter to get only full mask
+  
+  filter(Category == "Full Mask") %>%
+
+# Multiply HDI by 100 for readability purposes
+  
+  mutate(`2019 Oblast HDI` = `2019 Oblast HDI` * 100)
+```
+
+```{r regression}
+hdireg <- lm(Percentage ~ `2019 Oblast HDI` + `2020 City Population`, data = City)
+
+summary(hdireg)
 ```
 
