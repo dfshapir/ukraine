@@ -62,7 +62,7 @@ City <- City %>%
 ```
 
 ```{r regression}
-hdireg <- lm(Percentage ~ `2019 Oblast HDI` + `2020 City Population`, data = City)
+hdireg <- lm(Percentage ~ `2019 Oblast HDI` + `2020 City Population` + `Total Ukr Cases`, data = City)
 
 summary(hdireg)
 ```
