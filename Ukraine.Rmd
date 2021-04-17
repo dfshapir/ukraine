@@ -8,9 +8,35 @@ output: html_document
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE)
 library(tidyverse)
+library(readr)
+library(readxl)
+library(cowplot)
 ```
 
 ```{r}
+Totals <- read_xlsx("Totals.xlsx")
+```
 
+```{r pct graph}
+pct <- Totals %>%
+  mutate(`No Mask` = `No Mask`/`Total` * 100) %>%
+  mutate(`Mask Covers Nothing` = `Mask Covers Nothing`/`Total` * 100) %>%
+  mutate(`Mask Covers Mouth` = `Mask Covers Mouth`/`Total` * 100) %>%
+  mutate(`Full Mask` = `Full Mask`/`Total` * 100)
+
+pct <- pivot_longer(pct, cols = c(`No Mask`, `Mask Covers Nothing`, `Mask Covers Mouth`, `Full Mask`)) %>%
+  rename(Percentage = value) %>%
+  rename(`Level of Adherence` = name)
+
+region <- ggplot(pct, aes(x = Region, y = Percentage, fill = `Level of Adherence`)) +
+  geom_col() +
+  coord_flip() +
+  scale_fill_manual(values = c("light green", "yellow", "orange", "red")) +
+  labs(title = "Mask Wearing By Region",
+       subtitle = "Data Collected over 1 Month Period")
+
+region
+
+ggsave("region.png")
 ```
 
