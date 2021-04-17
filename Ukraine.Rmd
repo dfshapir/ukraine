@@ -58,8 +58,14 @@ City <- City %>%
 ```
 
 ```{r regression, results = 'asis'}
-hdireg <- lm(Percentage ~ `2019 Oblast HDI` + `2020 City Population` + `Total Ukr Cases` + `Not Oblast Center`, data = City)
+hdireg <- lm(Percentage ~ `2019 Oblast HDI` + `Total Ukr Cases` + `Not Oblast Center` + `2001 Pct Russian`, data = City)
+
+summary(hdireg)
 
 stargazer(hdireg, title = "Impact of City-Specific Factors on Percent Full Mask Wearing", type = "html")
+```
+
+```{r graphs}
+
 ```
 
