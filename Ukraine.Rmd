@@ -95,3 +95,12 @@ ggplot(City3, aes(x = `2001 Pct Russian`, y = Percentage)) +
   theme(legend.position = "none")
 ```
 
+```{r stores}
+stores <- read_xlsx("Supermarkets.xlsx")
+```
+
+```{r}
+ggplot(stores, aes(x = Category, y = Value, fill = `Grocery Store`)) +
+  geom_col(position = "dodge")
+```
+
