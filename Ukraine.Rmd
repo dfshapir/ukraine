@@ -46,11 +46,6 @@ City <- read_xlsx("City Data.xlsx")
 
 ```{r hdireal}
 City <- City %>%
-  filter(`Oblast Center` == 1) %>%
-
-# Drop Kramatorsk due to missing data
-  
-  filter(City != "Kramatorsk") %>%
 
 # Filter to get only full mask
   
@@ -62,7 +57,7 @@ City <- City %>%
 ```
 
 ```{r regression}
-hdireg <- lm(Percentage ~ `2019 Oblast HDI` + `2020 City Population` + `Total Ukr Cases`, data = City)
+hdireg <- lm(Percentage ~ `2019 Oblast HDI` + `2020 City Population` + `Total Ukr Cases` + `Not Oblast Center`, data = City)
 
 summary(hdireg)
 ```
