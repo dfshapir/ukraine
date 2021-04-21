@@ -81,7 +81,7 @@ ggplot(City3, aes(x = `2019 Oblast HDI`, y = Percentage)) +
 ggplot(City3, aes(x = `Total Ukr Cases`, y = Percentage)) +
   geom_point(aes(size = `2020 City Population`)) +
   geom_smooth(method = "lm", se = TRUE) +
-  geom_text(aes(label = City, hjust = .4, vjust = -1.1), size = 3) +
+  geom_text(aes(label = City, hjust = .5, vjust = -1.1), size = 3) +
   labs(title = "Relationship Between Total Ukrainian Cases and Percent Full Masking",
        subtitle = "Point Size is Relative to City Size") +
   theme(legend.position = "none") 
