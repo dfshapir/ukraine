@@ -13,6 +13,7 @@ library(readr)
 library(readxl)
 library(cowplot)
 library(stargazer)
+library(gridExtra)
 ```
 
 ```{r}
@@ -54,7 +55,8 @@ City2 <- City %>%
 
 # Multiply HDI by 100 for readability purposes
   
-  mutate(`2019 Oblast HDI` = `2019 Oblast HDI` * 100)
+  mutate(`2019 Oblast HDI` = `2019 Oblast HDI` * 100) %>%
+  mutate(`Total Ukr Cases` = `Total Ukr Cases` / 1000)
 ```
 
 ```{r regression, results = 'asis'}
@@ -70,7 +72,7 @@ City3 <- City %>%
   filter(Category == "Full Mask") %>%
   filter(City != "Bilhorod-Dnistrovskyi")
 
-ggplot(City3, aes(x = `2019 Oblast HDI`, y = Percentage)) +
+plot1 <- ggplot(City3, aes(x = `2019 Oblast HDI`, y = Percentage)) +
   geom_point(aes(size = `2020 City Population`)) +
   geom_smooth(method = "lm", se = TRUE) +
   geom_text(aes(label = City, hjust = .4, vjust = -1.1), size = 3) +
@@ -78,7 +80,9 @@ ggplot(City3, aes(x = `2019 Oblast HDI`, y = Percentage)) +
        subtitle = "Point Size is Relative to City Size") +
   theme(legend.position = "none")
 
-ggplot(City3, aes(x = `Total Ukr Cases`, y = Percentage)) +
+plot1
+
+plot2 <- ggplot(City3, aes(x = `Total Ukr Cases`, y = Percentage)) +
   geom_point(aes(size = `2020 City Population`)) +
   geom_smooth(method = "lm", se = TRUE) +
   geom_text(aes(label = City, hjust = .5, vjust = -1.1), size = 3) +
@@ -86,13 +90,21 @@ ggplot(City3, aes(x = `Total Ukr Cases`, y = Percentage)) +
        subtitle = "Point Size is Relative to City Size") +
   theme(legend.position = "none") 
 
-ggplot(City3, aes(x = `2001 Pct Russian`, y = Percentage)) +
+plot2
+
+plot3 <- ggplot(City3, aes(x = `2001 Pct Russian`, y = Percentage)) +
   geom_point(aes(size = `2020 City Population`)) +
   geom_smooth(method = "lm", se = TRUE) +
   geom_text(aes(label = City, hjust = .45, vjust = -1), size = 3) +
   labs(title = "Relationship Between Pct. of Native Russian Speakers and Pct. Full Masking",
        subtitle = "Point Size is Relative to City Size, Data is From 2001") +
   theme(legend.position = "none")
+
+plot3
+
+ggsave(plot = plot1, filename = "hdi.png")
+ggsave(plot = plot2, filename = "cases.png")
+ggsave(plot = plot3, filename = "russ.png")
 ```
 
 ```{r stores}
@@ -101,6 +113,9 @@ stores <- read_xlsx("Supermarkets.xlsx")
 
 ```{r}
 ggplot(stores, aes(x = Category, y = Value, fill = `Grocery Store`)) +
-  geom_col(position = "dodge")
+  geom_col(position = "dodge") +
+  scale_fill_manual(values = c("blue", "orange"))
+
+ggsave("supermarkets.png")
 ```
 
