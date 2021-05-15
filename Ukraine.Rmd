@@ -21,6 +21,9 @@ Totals <- read_xlsx("Totals.xlsx")
 ```
 
 ```{r pct graph}
+
+# Get percentages
+
 pct <- Totals %>%
   mutate(`No Mask` = `No Mask`/`Total` * 100) %>%
   mutate(`Mask Covers Nothing` = `Mask Covers Nothing`/`Total` * 100) %>%
