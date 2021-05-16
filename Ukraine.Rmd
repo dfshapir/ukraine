@@ -56,14 +56,14 @@ City2 <- City %>%
   
   filter(Category == "Full Mask") %>%
 
-# Multiply HDI by 100 for readability purposes
+# Multiply HDI by 100 and Total Ukr Cases for readability and interpretation purposes
   
   mutate(`2019 Oblast HDI` = `2019 Oblast HDI` * 100) %>%
   mutate(`Total Ukr Cases` = `Total Ukr Cases` / 1000)
 ```
 
 ```{r regression, results = 'asis'}
-hdireg <- lm(Percentage ~ `2019 Oblast HDI` + `Total Ukr Cases` + `Not Oblast Center` + `2001 Pct Russian`, data = City2)
+hdireg <- lm(Percentage ~ `2019 Oblast HDI` + `Total Ukr Cases` + `Not Oblast Center` + `2001 Pct Russian` + `Precinct Pct Zelensky`, data = City2)
 
 summary(hdireg)
 
