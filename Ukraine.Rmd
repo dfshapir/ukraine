@@ -72,8 +72,7 @@ stargazer(hdireg, title = "Impact of City-Specific Factors on Percent Full Mask 
 
 ```{r graphs, warning = FALSE}
 City3 <- City %>%
-  filter(Category == "Full Mask") %>%
-  filter(City != "Bilhorod-Dnistrovskyi")
+  filter(Category == "Full Mask")
 
 plot1 <- ggplot(City3, aes(x = `2019 Oblast HDI`, y = Percentage)) +
   geom_point(aes(size = `2020 City Population`)) +
@@ -105,9 +104,47 @@ plot3 <- ggplot(City3, aes(x = `2001 Pct Russian`, y = Percentage)) +
 
 plot3
 
+plot4 <- ggplot(City3, aes(x = `Precinct Pct Zelensky`, y = Percentage)) +
+  geom_point(aes(size = `2020 City Population`)) +
+  geom_smooth(method = "lm", se = TRUE) +
+  geom_text(aes(label = City, hjust = .58, vjust = -1), size = 3) +
+  labs(title = "Relationship Between Pct. Voting for Zelensky and Pct. Full Masking",
+       subtitle = "Point Size is Relative to City Size",
+       x = "Precinct Percentage for Zelensky",
+       y = "Percentage Full Masking") +
+  theme(legend.position = "none")
+
+plot4
+
+plot5 <- ggplot(City3, aes(x = `Precinct Pct Boyko`, y = Percentage)) +
+  geom_point(aes(size = `2020 City Population`)) +
+  geom_smooth(method = "lm", se = TRUE) +
+  geom_text(aes(label = City, hjust = .45, vjust = -1), size = 3) +
+  labs(title = "Relationship Between Pct. Voting for Boyko and Pct. Full Masking",
+       subtitle = "Point Size is Relative to City Size") +
+  theme(legend.position = "none")
+
+plot5
+
+plot6 <- ggplot(City3, aes(x = `Precinct Pct Poroshenko`, y = Percentage)) +
+  geom_point(aes(size = `2020 City Population`)) +
+  geom_smooth(method = "lm", se = TRUE) +
+  geom_text(aes(label = City, hjust = .45, vjust = -1), size = 3) +
+  labs(title = "Relationship Between Pct. Voting for Poroshenko and Pct. Full Masking",
+       subtitle = "Point Size is Relative to City Size") +
+  theme(legend.position = "none")
+
+plot6
+
 ggsave(plot = plot1, filename = "hdi.png")
 ggsave(plot = plot2, filename = "cases.png")
 ggsave(plot = plot3, filename = "russ.png")
+ggsave(plot = plot4, filename = "zelensky.png")
+ggsave(plot = plot5, filename = "boyko.png")
+ggsave(plot = plot6, filename = "poroshenko.png")
+```
+
+
 ```
 
 ```{r stores}
