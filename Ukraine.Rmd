@@ -144,7 +144,16 @@ ggsave(plot = plot5, filename = "boyko.png")
 ggsave(plot = plot6, filename = "poroshenko.png")
 ```
 
+```{r city size}
+City4 <- read_xlsx("City Size Condensed.xlsx")
 
+plot7 <- ggplot(City4, aes(x = Size, y = Percentage)) +
+  geom_col(fill = 'blue', width = 0.5) +
+  labs(title = "Relationship Between City Size and Percent Full Masking")
+
+plot7
+
+ggsave(plot = plot7, filename = "size.png")
 ```
 
 ```{r stores}
