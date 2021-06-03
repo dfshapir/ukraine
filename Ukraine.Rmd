@@ -149,7 +149,8 @@ City4 <- read_xlsx("City Size Condensed.xlsx")
 
 plot7 <- ggplot(City4, aes(x = Size, y = Percentage)) +
   geom_col(fill = 'blue', width = 0.5) +
-  labs(title = "Relationship Between City Size and Percent Full Masking")
+  labs(title = "Relationship Between City Size and Percent Full Masking") +
+  geom_text(aes(x = Size, y = Percentage, label = Percentage), stat = "sum", vjust = -0.5, size = 4)
 
 plot7
 
@@ -163,8 +164,22 @@ stores <- read_xlsx("Supermarkets.xlsx")
 ```{r}
 ggplot(stores, aes(x = Category, y = Value, fill = `Grocery Store`)) +
   geom_col(position = "dodge") +
-  scale_fill_manual(values = c("blue", "orange"))
+  scale_fill_manual(values = c("blue", "orange")) +
+  labs(title = "Mask Wearing Tendencies by Grocery Store")
 
 ggsave("supermarkets.png")
+```
+
+```{r cases w/o South}
+City5 <- City3 %>%
+  filter(Region != "South")
+
+ggplot(City5, aes(x = `Total Ukr Cases`, y = Percentage)) +
+  geom_point(aes(size = `2020 City Population`)) +
+  geom_smooth(method = "lm", se = TRUE) +
+  geom_text(aes(label = City, hjust = .5, vjust = -1.1), size = 3) +
+  labs(title = "Relationship Between Total Ukrainian Cases and Percent Full Masking",
+       subtitle = "Southern Cities Removed; Point Size is Relative to City Size") +
+  theme(legend.position = "none") 
 ```
 
