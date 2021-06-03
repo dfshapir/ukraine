@@ -181,5 +181,28 @@ ggplot(City5, aes(x = `Total Ukr Cases`, y = Percentage)) +
   labs(title = "Relationship Between Total Ukrainian Cases and Percent Full Masking",
        subtitle = "Southern Cities Removed; Point Size is Relative to City Size") +
   theme(legend.position = "none") 
+
+ggsave("abridgedcases.png")
+```
+
+```{r red zone logistic}
+plot8 <- ggplot(City3, aes(x = `Red Zone`, y = Percentage)) +
+  geom_point(aes(size = `2020 City Population`)) +
+  geom_smooth(method = "glm", se = TRUE) +
+  geom_text(aes(label = City, hjust = .5, vjust = -1.1), size = 2)
+
+plot8
+
+ggsave(plot = plot8, filename = "oblastcases.png")
+
+City6 <- City3 %>%
+  filter(City != "B. Dnistrovskyi")
+
+plot9 <- ggplot(City6, aes(x = `Red Zone`, y = Percentage)) +
+  geom_point(aes(size = `2020 City Population`)) +
+  geom_smooth(method = "glm", se = TRUE) +
+  geom_text(aes(label = City, hjust = .5, vjust = -1.1), size = 2)
+
+plot9
 ```
 
